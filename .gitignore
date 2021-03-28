@@ -1,0 +1,5 @@
+*.efi
+*.img
+*.lib
+*.o
+*.obj
