@@ -1,14 +1,16 @@
-.PHONY: all build clean
+.PHONY: all build bootloader clean
 
 LDC := ldc2
 
-D_SRCS = $(wildcard $(PWD)/source/*.d)
+BOOTLOADER_SRCS = $(wildcard $(PWD)/bootloader/*.d)
 TARGET_OBJ = efimain.o
 TARGET_BIN = hello.efi
 
 all: build
 
-build:
+build: bootloader
+
+bootloader:
 	$(LDC) \
 		-mtriple=x86_64-pc-win32-coff \
 		-boundscheck=off \
@@ -24,7 +26,7 @@ build:
 		-I./uefi-d/source -I./uefi-d/source/x64 \
 		-c \
 		-of=$(TARGET_OBJ) \
-		$(D_SRCS)
+		$(BOOTLOADER_SRCS)
 	lld-link \
 		-subsystem:efi_application \
 		-entry:EfiMain \
@@ -41,7 +43,7 @@ run-qemu: qemu-img
 		-hda disk.img \
 		-monitor stdio
 
-qemu-img: build
+qemu-img: bootloader
 	qemu-img create -f raw disk.img 200M
 	mkfs.fat -n 'Mikan OS' -s 2 -f 2 -R 32 -F 32 disk.img
 	mkdir -p mnt
