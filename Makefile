@@ -35,9 +35,11 @@ build:
 
 run-qemu: qemu-img
 	qemu-system-x86_64 \
-		-drive if=pflash,file=$(HOME)/dev/osdev/osbook/devenv/OVMF_CODE.fd \
-		-drive if=pflash,file=$(HOME)/dev/osdev/osbook/devenv/OVMF_VARS.fd \
-		-hda disk.img
+		-m 1G \
+		-drive if=pflash,format=raw,readonly,file=$(HOME)/dev/osdev/osbook/devenv/OVMF_CODE.fd \
+		-drive if=pflash,format=raw,file=$(HOME)/dev/osdev/osbook/devenv/OVMF_VARS.fd \
+		-hda disk.img \
+		-monitor stdio
 
 qemu-img: build
 	qemu-img create -f raw disk.img 200M
