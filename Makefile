@@ -38,8 +38,8 @@ bootloader:
 run-qemu: qemu-img
 	qemu-system-x86_64 \
 		-m 1G \
-		-drive if=pflash,format=raw,readonly,file=$(HOME)/dev/osdev/osbook/devenv/OVMF_CODE.fd \
-		-drive if=pflash,format=raw,file=$(HOME)/dev/osdev/osbook/devenv/OVMF_VARS.fd \
+		-drive if=pflash,format=raw,readonly,file=ovmf/OVMF_CODE.fd \
+		-drive if=pflash,format=raw,file=ovmf/OVMF_VARS.fd \
 		-hda disk.img \
 		-monitor stdio
 
